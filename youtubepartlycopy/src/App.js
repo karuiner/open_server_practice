@@ -4,19 +4,15 @@ import Sub from "./scripts/Sub";
 import Inputbox from "./scripts/Input";
 
 import { Component } from "react";
-//const apikey = "AIzaSyCNF4B1V8Rde3ZBBAaTxbOFR3ENnk4mDhk";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = { data: null, isSub: false, target: "", ...this.state, isfetching: true };
-        // console.log(this.state);
     }
 
     search = () => {
-        //        let com = `https://www.googleapis.com/youtube/v3/search?key=${apikey}&part=snippet&type=video&videoEmbeddable=true&maxResults=20`;
         let com = "http://localhost:3300/data";
-        //    if (target !== undefined) com += `&q=${target}`;
         return fetch(com)
             .then((d) => d.json())
             .then((r) => {
@@ -28,13 +24,7 @@ class App extends Component {
         this.setState({ target: data, isSub: true });
     };
 
-    componentDidMount() {
-        // let com = `https://www.googleapis.com/youtube/v3/search?key=${apikey}&part=snippet&type=video&videoEmbeddable=true&maxResults=20`;
-        // //    if (target !== undefined) com += `&q=${target}`;
-        // fetch(com)
-        //     .then((d) => d.json())
-        //     .then((r) => this.setState({ data: r, isfetching: false }));
-    }
+    componentDidMount() {}
     componentDidUpdate() {
         console.log(this.state);
     }
