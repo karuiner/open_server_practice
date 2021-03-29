@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Main from "./scripts/Main";
 import Sub from "./scripts/Sub";
 import Inputbox from "./scripts/Input";
-
+import { fakedata } from "./response2";
 import { Component } from "react";
 
 class App extends Component {
@@ -18,6 +18,11 @@ class App extends Component {
             .then((r) => {
                 this.setState({ data: r.items, isfetching: false });
                 return r;
+            })
+            .catch(() => {
+                return new Promise((yes, no) => {
+                    yes(fakedata.data);
+                });
             });
     };
     select = (data) => {

@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "fs": "^0.0.1-security",
     "styled-components": "^5.2.1"
   }
 }
