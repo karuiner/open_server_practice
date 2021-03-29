@@ -1,26 +1,25 @@
-import react, { Component } from "react";
-import styled from "styled-component";
+import logo from './logo.svg';
+import './App.css';
 
-class App extends Component {
-    render() {
-        return (
-            <Body>
-                <Header></Header>
-                {}
-            </Body>
-        );
-    }
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
 }
-const Body = styled.div`
-    height: 100vh;
-    width: 100vw;
-`;
-
-const Header = styled.div`
-    position : fixed
-    height :50px;
-    width:100%;
-    border:solid 1px black;
-`;
 
 export default App;
