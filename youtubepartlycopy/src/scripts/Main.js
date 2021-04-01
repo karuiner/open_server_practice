@@ -8,7 +8,7 @@ class Main extends Component {
     }
     componentDidMount() {
         this.props.search().then((r) => {
-            this.setState({ data: r.items });
+            this.setState({ data: r });
         });
     }
 

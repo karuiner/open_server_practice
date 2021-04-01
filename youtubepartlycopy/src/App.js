@@ -21,7 +21,7 @@ class App extends Component {
             })
             .catch(() => {
                 return new Promise((yes, no) => {
-                    yes(fakedata.data);
+                    yes(fakedata.items);
                 });
             });
     };
