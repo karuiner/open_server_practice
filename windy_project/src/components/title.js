@@ -8,7 +8,7 @@ const Titlecss = styled.div`
   display: flex;
   font-size: 200px;
   font-weight: 500;
-  margin-top:7%;
+  margin-top:3%;
   height:30%
   color: black;
   font-family: "Nanum_pen";
