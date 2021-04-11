@@ -12,7 +12,7 @@ function Login() {
     input1: "user name",
     input2: "password",
     button_left: "회원 가입",
-    button_right: "로그 인",
+    button_right: "로그인",
   };
   let resister_data = {
     input1: "user name",
