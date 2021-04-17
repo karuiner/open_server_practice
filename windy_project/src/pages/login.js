@@ -15,8 +15,7 @@ function Login() {
     button_right: "로그인",
   };
   let resister_data = {
-    input1: "user name",
-    input2: "password",
+    ...login_data,
     button_left: "취소",
     button_right: "가입",
   };
