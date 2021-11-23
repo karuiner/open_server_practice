@@ -1,0 +1,4 @@
+- nest.js 를 사용한 간단한 SSR 구현 연습
+- 유저 등록, 로그인, 로그 아웃, 수정, 탈퇴 기능을 구현한 페이지 구성을 목표.
+- typescript를 기반으로 typeorm , mysql을 사용하여 database 구성 예정.
+- 프론트 엔드 부분의 디자인은 예전 작업의 일부였던 windy project를 활용할 예정.
