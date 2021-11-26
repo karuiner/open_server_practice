@@ -1,6 +1,16 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { AppService } from './app.service';
-import { user } from './interface/user';
+import { user } from './dto/user.dto';
+import { update } from './dto/update.dto';
 
 @Controller()
 export class AppController {
@@ -16,28 +26,47 @@ export class AppController {
     return user;
   }
 
-  @Post()
-  create(user: user) {
+  @Post('user')
+  create(@Body() user: user) {
+    if (!this.appService.exist(user)) {
+      this.appService.newUser(user);
+      return 'ok';
+    } else {
+      throw new HttpException('exist', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('signin')
+  signIn(@Body() user: user) {
+    if (this.appService.exist(user) && this.appService.password(user)) {
+      return 'ok';
+    } else {
+      throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('signout')
+  signOut(@Body() user: user) {
     return user;
   }
 
-  @Post()
-  signIn(user: user) {
-    return user;
+  @Patch('user')
+  update(@Body() user: user) {
+    if (this.appService.exist(user)) {
+      this.appService.updateUser(user);
+      return 'ok';
+    } else {
+      throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 
-  @Post()
-  signOut(user: user) {
-    return user;
-  }
-
-  @Patch()
-  update(user: user) {
-    return user;
-  }
-
-  @Delete()
-  remove(user: user) {
-    return user;
+  @Delete('user')
+  remove(@Body() user: user) {
+    if (this.appService.exist(user)) {
+      this.appService.removeUser(user);
+      return 'ok';
+    } else {
+      throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 }
