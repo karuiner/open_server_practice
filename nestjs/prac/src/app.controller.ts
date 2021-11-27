@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { user } from './dto/user.dto';
-import { update } from './dto/update.dto';
 
 @Controller()
 export class AppController {
@@ -39,6 +38,8 @@ export class AppController {
   @Post('signin')
   signIn(@Body() user: user) {
     if (this.appService.exist(user) && this.appService.password(user)) {
+      this.appService.connect(user);
+
       return 'ok';
     } else {
       throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
@@ -47,7 +48,12 @@ export class AppController {
 
   @Post('signout')
   signOut(@Body() user: user) {
-    return user;
+    if (this.appService.isConnect(user)) {
+      this.appService.disconnect(user);
+      return 'goodbye';
+    } else {
+      throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch('user')

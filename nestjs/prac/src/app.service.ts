@@ -4,6 +4,7 @@ import { user } from './interface/user';
 @Injectable()
 export class AppService {
   private readonly users = {};
+  private readonly on = {};
 
   getHello(): string {
     return 'Hello World!';
@@ -11,6 +12,18 @@ export class AppService {
 
   exist(user: user) {
     return this.users[user.username] !== undefined;
+  }
+
+  isConnect(user: user) {
+    return this.on[user.username] !== undefined;
+  }
+
+  connect(user: user) {
+    this.on[user.username] = true;
+  }
+
+  disconnect(user: user) {
+    delete this.on[user.username];
   }
 
   password(user: user) {
