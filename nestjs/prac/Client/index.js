@@ -1,4 +1,3 @@
-const axios = require('axios');
 const login_page = document.querySelector('.login_page');
 const main_page = document.querySelector('.main_page');
 const login_windows = document.querySelectorAll('.login_window');
@@ -14,13 +13,21 @@ const inputs = [input_log_pass, input_log_user, input_res_user, input_res_pass];
 let username = '',
   password = '';
 
+function user_input_init() {
+  username = '';
+  password = '';
+  for (let i of inputs) {
+    i.value = '';
+  }
+}
+
 inputs.forEach((x) => {
   x.addEventListener('keyup', function (event) {
     if (x.id.split('_')[1] === 'username') {
-      username += event.key;
+      username = event.target.value;
       console.log(username);
     } else {
-      password += event.key;
+      password = event.target.value;
       console.log(password);
     }
   });
@@ -34,18 +41,28 @@ login_window_main
   .addEventListener('click', function () {
     login_window_main.classList.replace('visible', 'invisible');
     login_window_resister.classList.replace('invisible', 'visible');
-    username = '';
-    password = '';
+    user_input_init();
   });
 // 로그인 버튼
 login_window_main
   .querySelector('.button_r')
   .addEventListener('click', function () {
-    login_page.classList.replace('active', 'deactive');
-    main_page.classList.replace('deactive', 'active');
-
-    username = '';
-    password = '';
+    window
+      .fetch('http://localhost:4000/signin', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        login_page.classList.replace('active', 'deactive');
+        main_page.classList.replace('deactive', 'active');
+      })
+      .catch(() => {})
+      .finally(() => {
+        user_input_init();
+      });
   });
 
 // 회원가입 창에서 로그인 페이지로
@@ -54,8 +71,28 @@ login_window_resister
   .addEventListener('click', function () {
     login_window_main.classList.replace('invisible', 'visible');
     login_window_resister.classList.replace('visible', 'invisible');
-    username = '';
-    password = '';
+    user_input_init();
+  });
+
+login_window_resister
+  .querySelector('.button_r')
+  .addEventListener('click', function () {
+    window
+      .fetch('http://localhost:4000/user', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        login_page.classList.replace('active', 'deactive');
+        main_page.classList.replace('deactive', 'active');
+      })
+      .catch(() => {})
+      .finally(() => {
+        user_input_init();
+      });
   });
 
 function is_valid_user_data(id, password) {
