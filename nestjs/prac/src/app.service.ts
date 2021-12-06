@@ -10,20 +10,22 @@ export class AppService {
     return 'Hello World!';
   }
 
-  exist(user: user) {
-    return this.users[user.username] !== undefined;
+  exist(username: string) {
+    console.log(this.users[username]);
+    return this.users[username] !== undefined;
   }
 
-  isConnect(user: user) {
-    return this.on[user.username] !== undefined;
+  isConnect(username: string) {
+    console.log(this.on);
+    return this.on[username] !== undefined;
   }
 
-  connect(user: user) {
-    this.on[user.username] = true;
+  connect(username: string) {
+    this.on[username] = true;
   }
 
-  disconnect(user: user) {
-    delete this.on[user.username];
+  disconnect(username: string) {
+    delete this.on[username];
   }
 
   password(user: user) {
@@ -32,6 +34,7 @@ export class AppService {
 
   newUser(user: user) {
     this.users[user.username] = user.password;
+    console.log(this.users);
   }
 
   removeUser(user: user) {

@@ -12,7 +12,7 @@ const input_res_pass = document.getElementById('resister_password');
 const inputs = [input_log_pass, input_log_user, input_res_user, input_res_pass];
 let username = '',
   password = '';
-
+let user = {};
 function user_input_init() {
   username = '';
   password = '';
@@ -47,22 +47,29 @@ login_window_main
 login_window_main
   .querySelector('.button_r')
   .addEventListener('click', function () {
-    window
-      .fetch('http://localhost:4000/signin', {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(() => {
-        login_page.classList.replace('active', 'deactive');
-        main_page.classList.replace('deactive', 'active');
-      })
-      .catch(() => {})
-      .finally(() => {
-        user_input_init();
-      });
+    if (is_valid_user_data(username, password)) {
+      window
+        .fetch('http://localhost:4000/signin', {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(() => {
+          login_window_sub.classList.replace('invisible', 'visible');
+          login_window_main.classList.replace('visible', 'invisible');
+          user = username;
+        })
+        .catch(() => {
+          console.log('fail');
+        })
+        .finally(() => {
+          user_input_init();
+        });
+    } else {
+      user_input_init();
+    }
   });
 
 // 회원가입 창에서 로그인 페이지로
@@ -77,38 +84,62 @@ login_window_resister
 login_window_resister
   .querySelector('.button_r')
   .addEventListener('click', function () {
+    console.log(is_valid_user_data(username, password));
+    if (is_valid_user_data(username, password)) {
+      window
+        .fetch('http://localhost:4000/user', {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(() => {
+          login_window_main.classList.replace('invisible', 'visible');
+          login_window_resister.classList.replace('visible', 'invisible');
+        })
+        .catch(() => {})
+        .finally(() => {
+          user_input_init();
+        });
+    } else {
+      user_input_init();
+    }
+  });
+
+login_window_sub
+  .querySelector('.button_t')
+  .addEventListener('click', function () {
     window
-      .fetch('http://localhost:4000/user', {
+      .fetch('http://localhost:4000/signout', {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: user }),
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(() => {
-        login_page.classList.replace('active', 'deactive');
-        main_page.classList.replace('deactive', 'active');
+        login_window_sub.classList.replace('visible', 'invisible');
+        login_window_main.classList.replace('invisible', 'visible');
       })
       .catch(() => {})
       .finally(() => {
         user_input_init();
       });
   });
-
 function is_valid_user_data(id, password) {
   // id는 최소 8글자 최대 14글자 영문과 숫자로만 구성
   //영어랑 숫자만 가능
-  id = id.toLowerCase();
   function idcheck(str) {
-    return /^[A-Za-z][A-Za-z0-9]*$.{8,14}/.test(str);
+    return /^[a-z]+[a-z0-9]{3,19}$/g.test(str);
   }
   function passwordcheck(str) {
-    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,24}$/.test(
-      str,
-    );
+    return /^[a-z]+[a-z0-9]{3,19}$/g.test(str);
+    // return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{4,24}$/.test(
+    //   str    );
   }
 
-  if (id !== 'guest') {
+  if (id === 'guest') {
     return true;
   } else {
     return idcheck(id) && passwordcheck(password);

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { user } from './dto/user.dto';
+import { puser } from './dto/puser.dto';
 
 @Controller()
 export class AppController {
@@ -27,7 +28,7 @@ export class AppController {
 
   @Post('user')
   create(@Body() user: user) {
-    if (!this.appService.exist(user)) {
+    if (!this.appService.exist(user.username)) {
       this.appService.newUser(user);
       return 'ok';
     } else {
@@ -37,9 +38,12 @@ export class AppController {
 
   @Post('signin')
   signIn(@Body() user: user) {
-    if (this.appService.exist(user) && this.appService.password(user)) {
-      this.appService.connect(user);
-
+    if (
+      this.appService.exist(user.username) &&
+      this.appService.password(user)
+    ) {
+      this.appService.connect(user.username);
+      console.log(user);
       return 'ok';
     } else {
       throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
@@ -47,9 +51,9 @@ export class AppController {
   }
 
   @Post('signout')
-  signOut(@Body() user: user) {
-    if (this.appService.isConnect(user)) {
-      this.appService.disconnect(user);
+  signOut(@Body() user: puser) {
+    if (this.appService.isConnect(user.username)) {
+      this.appService.disconnect(user.username);
       return 'goodbye';
     } else {
       throw new HttpException('wrong', HttpStatus.BAD_REQUEST);
@@ -58,7 +62,7 @@ export class AppController {
 
   @Patch('user')
   update(@Body() user: user) {
-    if (this.appService.exist(user)) {
+    if (this.appService.exist(user.username)) {
       this.appService.updateUser(user);
       return 'ok';
     } else {
@@ -68,7 +72,7 @@ export class AppController {
 
   @Delete('user')
   remove(@Body() user: user) {
-    if (this.appService.exist(user)) {
+    if (this.appService.exist(user.username)) {
       this.appService.removeUser(user);
       return 'ok';
     } else {
